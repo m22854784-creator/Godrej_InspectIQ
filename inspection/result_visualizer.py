@@ -1,7 +1,6 @@
 import cv2
 
 from config import GREEN
-from config import ORANGE
 from config import RED
 
 
@@ -13,27 +12,23 @@ def draw_result(image, result):
     score = result["score"]
     coverage = result["coverage"]
 
-    color = GREEN
+    # ALWAYS GREEN FOR GLUE
 
-    if score < 80:
-        color = ORANGE
+    glue_color = GREEN
 
-    if status == "FAIL":
-        color = RED
-
-    # Draw Glue Region
+    # Draw glue contours
 
     cv2.drawContours(
         output,
         result["contours"],
         -1,
-        color,
+        glue_color,
         3
     )
 
-    # Draw Actual Difference Regions
+    # Draw actual defect regions
 
-    for contour in result["defect_contours"]:
+    for contour in result["defect_contours"\]:
 
         area = cv2.contourArea(contour)
 
@@ -60,13 +55,18 @@ def draw_result(image, result):
             2
         )
 
-    # Status Panel
+    # Status Box
+
+    status_color = GREEN
+
+    if status == "FAIL":
+        status_color = RED
 
     cv2.rectangle(
         output,
         (20, 20),
         (550, 190),
-        color,
+        status_color,
         3
     )
 
@@ -76,7 +76,7 @@ def draw_result(image, result):
         (40, 70),
         cv2.FONT_HERSHEY_SIMPLEX,
         1,
-        color,
+        status_color,
         3
     )
 
@@ -86,7 +86,7 @@ def draw_result(image, result):
         (40, 120),
         cv2.FONT_HERSHEY_SIMPLEX,
         1,
-        color,
+        status_color,
         3
     )
 
@@ -96,7 +96,7 @@ def draw_result(image, result):
         (40, 170),
         cv2.FONT_HERSHEY_SIMPLEX,
         0.8,
-        color,
+        status_color,
         2
     )
 
